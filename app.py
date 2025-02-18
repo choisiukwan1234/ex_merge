@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 # In-memory database
-todos = []
+items = []
 
 @app.route('/todos', methods=['GET'])
 def get_todos():
@@ -11,9 +11,9 @@ def get_todos():
 
 @app.route('/todos', methods=['POST'])
 def add_item():
-    items = request.json
-    items.append(items)
-    return jsonify(items), 201
+    item = request.json
+    items.append(item)
+    return jsonify(item), 201
 
 @app.route('/todos/<int:todo_id>', methods=['PUT'])
 def update_todo(todo_id):
