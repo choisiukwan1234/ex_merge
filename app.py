@@ -3,37 +3,39 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 # In-memory database
-todos = []
+items = []
 
 @app.route('/todos', methods=['GET'])
 def get_todos():
-    return jsonify(todos), 200
+    return jsonify(items), 200
 
 @app.route('/todos', methods=['POST'])
+
 def add_todo():
-    todo = request.json
+    item = request.json
 
     # add item only if it is not already present
-    if todo in todos:
+    if item in items:
         return jsonify({'error': 'Item already exists'}), 400
     else:
-        todos.append(todo)
-        return jsonify(todo), 201
+        items.append(item)
+        return jsonify(item), 201
+
 
 @app.route('/todos/<int:todo_id>', methods=['PUT'])
 def update_todo(todo_id):
-    if todo_id >= len(todos) or todo_id < 0:
+    if todo_id >= len(items) or todo_id < 0:
         return jsonify({'error': 'Todo not found'}), 404
-    todo = request.json
-    todos[todo_id] = todo
-    return jsonify(todo), 200
+    item = request.json
+    items[todo_id] = item
+    return jsonify(item), 200
 
 @app.route('/todos/<int:todo_id>', methods=['DELETE'])
 def delete_todo(todo_id):
-    if todo_id >= len(todos) or todo_id < 0:
+    if todo_id >= len(items) or todo_id < 0:
         return jsonify({'error': 'Todo not found'}), 404
-    todo = todos.pop(todo_id)
-    return jsonify(todo), 200
+    item = items.pop(todo_id)
+    return jsonify(item), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
